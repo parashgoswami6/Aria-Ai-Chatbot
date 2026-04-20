@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Login — Aria</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body data-theme="dark">
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-icon"><i class="fa-solid fa-robot"></i></div>
+    <h1>Aria Admin</h1>
+    <p class="login-sub">Sign in to manage your chatbot</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash-msg {{ category }}">
+          <i class="fa-solid fa-triangle-exclamation"></i> {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" class="login-form">
+      <div class="form-group">
+        <label><i class="fa-solid fa-user"></i> Username</label>
+        <input type="text" name="username" placeholder="admin" required autocomplete="off"/>
+      </div>
+      <div class="form-group">
+        <label><i class="fa-solid fa-lock"></i> Password</label>
+        <input type="password" name="password" placeholder="••••••••" required/>
+      </div>
+      <button type="submit" class="btn-primary full">
+        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+      </button>
+    </form>
+
+    <p class="login-hint">Default: admin / admin123<br>Change via environment variables</p>
+    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Chat</a>
+  </div>
+</div>
+</body>
+</html>

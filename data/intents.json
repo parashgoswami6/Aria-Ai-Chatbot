@@ -1,0 +1,151 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hello", "hi", "hey", "good morning", "good evening", "howdy", "what's up", "sup", "greetings", "hi there"],
+      "responses": ["Hello! How can I help you today?", "Hi there! What can I do for you?", "Hey! Great to see you. How can I assist?", "Greetings! What's on your mind?"],
+      "context": ""
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["bye", "goodbye", "see you", "later", "take care", "farewell", "good night", "cya", "see ya", "exit", "quit"],
+      "responses": ["Goodbye! Have a wonderful day!", "See you later! Take care!", "Bye! Feel free to come back anytime.", "Farewell! It was great chatting with you!"],
+      "context": ""
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["thanks", "thank you", "thank you so much", "thanks a lot", "much appreciated", "cheers", "thx", "ty"],
+      "responses": ["You're welcome!", "Happy to help!", "Anytime! That's what I'm here for.", "Glad I could assist!"],
+      "context": ""
+    },
+    {
+      "tag": "name",
+      "patterns": ["what is your name", "who are you", "what should I call you", "do you have a name", "tell me your name", "what are you called"],
+      "responses": ["I'm Aria, your AI assistant!", "You can call me Aria — your smart chatbot.", "I'm Aria, here to help you with anything!"],
+      "context": ""
+    },
+    {
+      "tag": "how_are_you",
+      "patterns": ["how are you", "how are you doing", "are you okay", "how's it going", "how do you feel", "you doing well"],
+      "responses": ["I'm doing great, thanks for asking!", "I'm always happy when I'm helping someone!", "Feeling fantastic! How about you?"],
+      "context": ""
+    },
+    {
+      "tag": "age",
+      "patterns": ["how old are you", "what is your age", "when were you born", "what year were you made"],
+      "responses": ["I'm an AI so I don't age, but I was trained on modern data!", "Age is just a number — I'm timeless!", "I was created recently, so I'm pretty new!"],
+      "context": ""
+    },
+    {
+      "tag": "capabilities",
+      "patterns": ["what can you do", "what are your capabilities", "help me", "what do you know", "what are you good at", "features"],
+      "responses": ["I can answer questions, have conversations, help with information, and much more! Try asking me anything.", "I'm capable of understanding your questions, providing information, and having meaningful conversations!"],
+      "context": ""
+    },
+    {
+      "tag": "weather",
+      "patterns": ["what is the weather", "how is the weather today", "weather forecast", "will it rain", "is it hot outside", "temperature today"],
+      "responses": ["I don't have live weather data, but you can check weather.com or Google Weather for real-time updates!", "For accurate weather, I recommend checking a weather service. I can answer general questions though!"],
+      "context": ""
+    },
+    {
+      "tag": "time",
+      "patterns": ["what time is it", "current time", "what is the time", "tell me the time", "time now"],
+      "responses": ["I don't have access to real-time clock, but your device can tell you the exact time!", "Check your device clock for the current time — I lack real-time access."],
+      "context": ""
+    },
+    {
+      "tag": "jokes",
+      "patterns": ["tell me a joke", "make me laugh", "say something funny", "joke please", "funny joke", "humor me"],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything! 😄",
+        "I told my computer I needed a break. Now it won't stop sending me Kit-Kat ads! 😂",
+        "Why did the programmer quit his job? Because he didn't get arrays! 💻😄",
+        "Why do Java developers wear glasses? Because they don't C#! 🤓"
+      ],
+      "context": ""
+    },
+    {
+      "tag": "python",
+      "patterns": ["what is python", "tell me about python", "python programming", "python language", "learn python"],
+      "responses": ["Python is a high-level, interpreted programming language known for its simplicity and readability. It's widely used in AI, web development, data science, and automation!"],
+      "context": ""
+    },
+    {
+      "tag": "machine_learning",
+      "patterns": ["what is machine learning", "explain ml", "what is AI", "artificial intelligence", "deep learning", "neural networks"],
+      "responses": ["Machine Learning is a subset of AI where systems learn from data to improve their performance without being explicitly programmed. It powers things like recommendations, image recognition, and chatbots like me!"],
+      "context": ""
+    },
+    {
+      "tag": "web_development",
+      "patterns": ["what is web development", "how to make website", "web dev", "html css javascript", "frontend backend"],
+      "responses": ["Web development involves building websites and applications. Frontend uses HTML, CSS, JS for the UI; Backend uses Python, Node.js etc. for server logic. Full-stack developers do both!"],
+      "context": ""
+    },
+    {
+      "tag": "database",
+      "patterns": ["what is a database", "sql database", "sqlite", "mysql", "mongodb", "explain database"],
+      "responses": ["A database is an organized collection of structured data. SQL databases like MySQL/SQLite use tables; NoSQL like MongoDB uses documents. I use SQLite to store our chat history!"],
+      "context": ""
+    },
+    {
+      "tag": "flask",
+      "patterns": ["what is flask", "flask framework", "python flask", "explain flask", "flask web"],
+      "responses": ["Flask is a lightweight Python web framework. It's micro (minimal), flexible, and perfect for building APIs and web apps. This chatbot is powered by Flask!"],
+      "context": ""
+    },
+    {
+      "tag": "nlp",
+      "patterns": ["what is nlp", "natural language processing", "how do you understand me", "how does nlp work", "text processing"],
+      "responses": ["NLP (Natural Language Processing) is AI that helps computers understand human language. I use techniques like tokenization, lemmatization, and TF-IDF vectorization to understand your messages!"],
+      "context": ""
+    },
+    {
+      "tag": "creator",
+      "patterns": ["who created you", "who made you", "who built you", "who is your creator", "who developed you"],
+      "responses": ["I was built using Python, Flask, NLTK, and modern web technologies. I'm an open-source AI chatbot you can customize!", "A Python developer built me using NLP techniques and Flask!"],
+      "context": ""
+    },
+    {
+      "tag": "motivation",
+      "patterns": ["motivate me", "give me motivation", "inspire me", "i am sad", "i feel down", "i need encouragement"],
+      "responses": [
+        "Every expert was once a beginner. Keep going — you're doing amazing! 💪",
+        "Success is not final, failure is not fatal. It's the courage to continue that counts! 🌟",
+        "Believe in yourself! You have more strength than you think. 🚀",
+        "One step at a time. You've got this! 💫"
+      ],
+      "context": ""
+    },
+    {
+      "tag": "math",
+      "patterns": ["solve math", "what is 2+2", "calculate", "math problem", "arithmetic"],
+      "responses": ["For math calculations, try Python: `print(2+2)` gives 4! Or use Google Calculator for quick results. I can explain math concepts though!"],
+      "context": ""
+    },
+    {
+      "tag": "meaning_of_life",
+      "patterns": ["what is the meaning of life", "purpose of life", "why are we here", "42", "life purpose"],
+      "responses": ["The meaning of life is 42... according to Douglas Adams! But seriously, it's about finding purpose, connection, and growth. What does it mean to you?", "Philosophers have debated this forever! Many say it's about creating your own meaning. What gives YOUR life purpose?"],
+      "context": ""
+    },
+    {
+      "tag": "food",
+      "patterns": ["what is your favorite food", "do you eat", "food recommendation", "best food", "what should i eat"],
+      "responses": ["I'm an AI so I can't eat, but I hear pizza is pretty universally loved! 🍕 What kind of food do you enjoy?"],
+      "context": ""
+    },
+    {
+      "tag": "fallback",
+      "patterns": [],
+      "responses": [
+        "I'm not sure I understand. Could you rephrase that?",
+        "Hmm, that's a tricky one! Try asking differently.",
+        "I don't have information on that yet. Try asking something else!",
+        "I'm still learning! Could you clarify what you mean?"
+      ],
+      "context": "fallback"
+    }
+  ]
+}

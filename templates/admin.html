@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aria — Admin Panel</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body data-theme="dark">
+
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <i class="fa-solid fa-robot"></i>
+      <span>Aria Admin</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="#overview"  class="nav-item active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+      <a href="#history"   class="nav-item"><i class="fa-solid fa-comments"></i> Chat History</a>
+      <a href="#intents"   class="nav-item"><i class="fa-solid fa-brain"></i> Manage Intents</a>
+      <a href="#sessions"  class="nav-item"><i class="fa-solid fa-users"></i> Sessions</a>
+    </nav>
+    <div class="admin-footer">
+      <a href="/" class="nav-item"><i class="fa-solid fa-arrow-left"></i> Back to Chat</a>
+      <a href="/admin/logout" class="nav-item danger"><i class="fa-solid fa-power-off"></i> Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1><i class="fa-solid fa-shield-halved"></i> Admin Panel</h1>
+      <span class="admin-badge">Aria AI v1.0</span>
+    </div>
+
+    <!-- Stats cards -->
+    <section id="overview" class="admin-section">
+      <h2>📊 Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fa-solid fa-comments"></i>
+          <div>
+            <span class="stat-num">{{ stats.total_messages }}</span>
+            <span class="stat-label">Total Messages</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-users"></i>
+          <div>
+            <span class="stat-num">{{ stats.total_sessions }}</span>
+            <span class="stat-label">Sessions</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-brain"></i>
+          <div>
+            <span class="stat-num">{{ intents|length }}</span>
+            <span class="stat-label">Intents</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-fire"></i>
+          <div>
+            <span class="stat-num">
+              {% if stats.top_intents %}{{ stats.top_intents[0].intent }}{% else %}—{% endif %}
+            </span>
+            <span class="stat-label">Top Intent</span>
+          </div>
+        </div>
+      </div>
+
+      {% if stats.top_intents %}
+      <div class="admin-card">
+        <h3>🏆 Top Intents</h3>
+        {% for item in stats.top_intents %}
+        <div class="intent-row">
+          <span class="intent-name">{{ item.intent }}</span>
+          <div class="intent-bar-wrap">
+            <div class="intent-bar-fill" style="width: {{ [item.count * 10, 100]|min }}%"></div>
+          </div>
+          <span class="intent-count">{{ item.count }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+
+    <!-- Chat History -->
+    <section id="history" class="admin-section">
+      <h2>💬 Recent Conversations</h2>
+      <div class="admin-card table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Session</th>
+              <th>Role</th>
+              <th>Message</th>
+              <th>Intent</th>
+              <th>Confidence</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for msg in messages %}
+            <tr class="{{ 'user-row' if msg.role == 'user' else 'bot-row' }}">
+              <td><code>{{ msg.session_id[:8] }}...</code></td>
+              <td><span class="role-badge {{ msg.role }}">{{ msg.role }}</span></td>
+              <td class="msg-cell">{{ msg.content[:80] }}{% if msg.content|length > 80 %}...{% endif %}</td>
+              <td>{% if msg.intent %}<span class="intent-tag">{{ msg.intent }}</span>{% else %}—{% endif %}</td>
+              <td>{% if msg.confidence %}{{ "%.0f"|format(msg.confidence * 100) }}%{% else %}—{% endif %}</td>
+              <td class="time-cell">{{ msg.timestamp }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="empty-cell">No messages yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Intents Editor -->
+    <section id="intents" class="admin-section">
+      <h2>🧠 Manage Intents</h2>
+      <div class="admin-card">
+        <div class="editor-toolbar">
+          <button class="btn-primary" onclick="loadIntentsEditor()">
+            <i class="fa-solid fa-pen"></i> Edit Intents JSON
+          </button>
+          <button class="btn-success" onclick="saveIntents()" id="saveBtn" style="display:none">
+            <i class="fa-solid fa-floppy-disk"></i> Save & Reload Model
+          </button>
+          <span class="editor-hint">Changes are applied immediately — no restart needed!</span>
+        </div>
+        <div id="intentsList">
+          {% for intent in intents %}
+          <div class="intent-card {{ 'fallback-card' if intent.tag == 'fallback' else '' }}">
+            <div class="intent-card-header">
+              <span class="intent-tag">{{ intent.tag }}</span>
+              <span class="pattern-count">{{ intent.patterns|length }} patterns · {{ intent.responses|length }} responses</span>
+            </div>
+            {% if intent.patterns %}
+            <div class="pattern-list">
+              {% for p in intent.patterns[:3] %}
+              <span class="pattern-chip">"{{ p }}"</span>
+              {% endfor %}
+              {% if intent.patterns|length > 3 %}
+              <span class="pattern-chip muted">+{{ intent.patterns|length - 3 }} more</span>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+
+        <div id="jsonEditor" style="display:none">
+          <textarea id="intentsJson" class="json-editor" rows="30" spellcheck="false"></textarea>
+          <div id="jsonError" class="json-error" style="display:none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sessions -->
+    <section id="sessions" class="admin-section">
+      <h2>👥 Active Sessions</h2>
+      <div class="admin-card table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Session ID</th><th>Messages</th><th>Created</th><th>Last Active</th></tr>
+          </thead>
+          <tbody>
+            {% for s in sessions %}
+            <tr>
+              <td><code>{{ s.session_id[:16] }}...</code></td>
+              <td>{{ s.message_count }}</td>
+              <td>{{ s.created_at }}</td>
+              <td>{{ s.updated_at }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="empty-cell">No sessions yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+async function loadIntentsEditor() {
+  const editor = document.getElementById("jsonEditor");
+  const list   = document.getElementById("intentsList");
+  const saveBtn = document.getElementById("saveBtn");
+
+  try {
+    const res  = await fetch("/admin/intents");
+    const data = await res.json();
+    document.getElementById("intentsJson").value = JSON.stringify(data, null, 2);
+    editor.style.display = "block";
+    list.style.display   = "none";
+    saveBtn.style.display = "inline-flex";
+  } catch(e) {
+    showToast("Failed to load intents", "error");
+  }
+}
+
+async function saveIntents() {
+  const raw = document.getElementById("intentsJson").value;
+  const errorEl = document.getElementById("jsonError");
+
+  try {
+    const data = JSON.parse(raw);
+    errorEl.style.display = "none";
+
+    const res = await fetch("/admin/intents", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify(data)
+    });
+    const result = await res.json();
+
+    if (result.status === "success") {
+      showToast("✅ Intents saved and model reloaded!", "success");
+    } else {
+      showToast("❌ " + result.message, "error");
+    }
+  } catch(e) {
+    errorEl.textContent = "Invalid JSON: " + e.message;
+    errorEl.style.display = "block";
+  }
+}
+
+function showToast(msg, type = "info") {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.className   = `toast show ${type}`;
+  setTimeout(() => toast.className = "toast", 3500);
+}
+</script>
+</body>
+</html>
