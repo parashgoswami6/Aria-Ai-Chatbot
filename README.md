@@ -51,7 +51,7 @@ python app.py
 ```
 Chat UI:      http://localhost:5000
 Admin Panel:  http://localhost:5000/admin
-Admin Login:  *********
+Admin Login:   admin / admin123
 ```
 
 ---
